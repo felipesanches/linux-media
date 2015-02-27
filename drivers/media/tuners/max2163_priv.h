@@ -70,7 +70,7 @@
 
 #define VCO_REG                      0x02
 #define VCOB_NORMAL_POWER           (0 << 0)
-#define _VCO_REG_VCOB_LOW_POWER     (1 << 0)
+#define VCOB_LOW_POWER              (1 << 0)
 #define SUB_BAND_0                  (0 << 1)
 #define SUB_BAND_1                  (1 << 1)
 #define SUB_BAND_2                  (2 << 1)

@@ -210,7 +210,7 @@ static int max2163_sleep(struct dvb_frontend *fe)
 
 static int max2163_init(struct dvb_frontend *fe)
 {
-//	struct max2163_priv *priv = fe->tuner_priv;
+	struct max2163_priv *priv = fe->tuner_priv;
 	dprintk("%s()\n", __func__);
 
 	if (fe->ops.i2c_gate_ctrl)
@@ -218,9 +218,58 @@ static int max2163_init(struct dvb_frontend *fe)
 
 	/* Setup initial values */
 
-//TODO: Implement-me!
+	/* Initialize the IF Filter Register */
+    /* OBS: Datasheet suggests using BIAS_CURRENT_01 upon power-up
+            but the observed log uses BIAS_CURRENT_11 */
+    max2163_write_reg(priv, IF_FILTER_REG,
+                            BANDWIDTH_13MHZ | BIAS_CURRENT_11 | 
+                            FLTS_INTERNAL | CENTER_FREQUENCY_1_00);
 
-//	max2163_write_reg(priv, REG_?, 0x??);
+
+	/* Initialize the VAS Register */
+    max2163_write_reg(priv, VAS_REG,
+                            START_AT_CURR_LOADED_REGS | ENABLE_VCO_AUTOSELECT | CPS_AUTOMATIC |
+                            DISABLE_ADC_LATCH | ENABLE_ADC_READ | AUTOSELECT_45056_WAIT_TIME);
+
+	/* Initialize the VCO Register */
+    max2163_write_reg(priv, VCO_REG,
+                            VCO_1 | SUB_BAND_4 | VCOB_LOW_POWER);
+
+	/* Initialize the PDET/RF-FILT Register */
+    max2163_write_reg(priv, RF_FILTER_REG,
+                            UHF_RANGE_710_806MHZ | PWRDET_BUF_ON_GC1);
+
+	/* Initialize the MODE Register */
+    max2163_write_reg(priv, MODE_REG,
+                            HIGH_SIDE_INJECTION | ENABLE_RF_FILTER |
+                            ENABLE_3RD_STAGE_RFVGA);
+
+	/* Initialize the R-Divider MSB Register */
+    max2163_write_reg(priv, RDIVIDER_MSB_REG,
+                            PLL_MOST_RDIVIDER(DEFAULT_RDIVIDER));
+	
+	/* Initialize the R-Divider LSB/CP Register */
+    max2163_write_reg(priv, RDIVIDER_LSB_REG,
+                            PLL_LEAST_RDIVIDER(DEFAULT_RDIVIDER) | RFDA_37DB |
+                            ENABLE_RF_DETECTOR | CHARGE_PUMP_1_5MA);
+
+	/* Initialize the N-Divider MSB Register */
+    max2163_write_reg(priv, NDIVIDER_MSB_REG,
+                            PLL_MOST_NDIVIDER(DEFAULT_NDIVIDER));
+	
+	/* Initialize the N-Divider LSB/LIN Register */
+    max2163_write_reg(priv, NDIVIDER_LSB_REG,
+                            STBY_NORMAL | RFVGA_NORMAL |
+                            MIX_NORMAL | PLL_LEAST_NDIVIDER(DEFAULT_NDIVIDER));
+
+	/* Initialize non-documented registers */
+    max2163_write_reg(priv, RESERVED1_REG, 0);
+    max2163_write_reg(priv, RESERVED2_REG, 0);
+    max2163_write_reg(priv, RESERVED3_REG, 0);
+    max2163_write_reg(priv, RESERVED4_REG, 0);
+    max2163_write_reg(priv, RESERVED5_REG, 0);
+    max2163_write_reg(priv, RESERVED6_REG, 0);
+    max2163_write_reg(priv, RESERVED7_REG, 0);
 
 	if (fe->ops.i2c_gate_ctrl)
 			fe->ops.i2c_gate_ctrl(fe, 0);
