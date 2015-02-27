@@ -182,21 +182,21 @@
 #define VCO_SUBBAND            0x3c
 #define VCO_AUTOSELECT         0xc0
 
-#define RESERVED1_REG              0x0b
-#define RESERVED2_REG              0x0c
-#define RESERVED3_REG              0x0d
-#define RESERVED4_REG              0x0e
-#define RESERVED5_REG              0x0f
-#define RESERVED6_REG              0x10
-#define RESERVED7_REG              0x11
+#define RESERVED_0B_REG              0x0b
+#define RESERVED_0C_REG              0x0c
+#define RESERVED_0D_REG              0x0d
+#define RESERVED_0E_REG              0x0e
+#define RESERVED_0F_REG              0x0f
+#define RESERVED_10_REG              0x10
+#define RESERVED_11_REG              0x11
 
-#define RESERVED1_REG_MASK         0x00
-#define RESERVED2_REG_MASK         0x00
-#define RESERVED3_REG_MASK         0x00
-#define RESERVED4_REG_MASK         0x00
-#define RESERVED5_REG_MASK         0x00
-#define RESERVED6_REG_MASK         0x00
-#define RESERVED7_REG_MASK         0x00
+#define RESERVED_0B_REG_MASK         0x00
+#define RESERVED_0C_REG_MASK         0x00
+#define RESERVED_0D_REG_MASK         0x00
+#define RESERVED_0E_REG_MASK         0x00
+#define RESERVED_0F_REG_MASK         0x00
+#define RESERVED_10_REG_MASK         0x00
+#define RESERVED_11_REG_MASK         0x00
 
 struct max2163_priv {
 	struct max2163_config *config;

@@ -263,13 +263,13 @@ static int max2163_init(struct dvb_frontend *fe)
                             MIX_NORMAL | PLL_LEAST_NDIVIDER(DEFAULT_NDIVIDER));
 
 	/* Initialize non-documented registers */
-    max2163_write_reg(priv, RESERVED1_REG, 0);
-    max2163_write_reg(priv, RESERVED2_REG, 0);
-    max2163_write_reg(priv, RESERVED3_REG, 0);
-    max2163_write_reg(priv, RESERVED4_REG, 0);
-    max2163_write_reg(priv, RESERVED5_REG, 0);
-    max2163_write_reg(priv, RESERVED6_REG, 0);
-    max2163_write_reg(priv, RESERVED7_REG, 0);
+    max2163_write_reg(priv, RESERVED_0B_REG, 0x00);
+    max2163_write_reg(priv, RESERVED_0C_REG, 0x00);
+    max2163_write_reg(priv, RESERVED_0D_REG, 0x00);
+    max2163_write_reg(priv, RESERVED_0E_REG, 0x00);
+    max2163_write_reg(priv, RESERVED_0F_REG, 0x00);
+    max2163_write_reg(priv, RESERVED_10_REG, 0x00);
+    max2163_write_reg(priv, RESERVED_11_REG, 0x00);
 
 	if (fe->ops.i2c_gate_ctrl)
 			fe->ops.i2c_gate_ctrl(fe, 0);
