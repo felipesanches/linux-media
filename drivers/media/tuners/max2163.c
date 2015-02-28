@@ -188,12 +188,12 @@ static int max2163_set_params(struct dvb_frontend *fe)
 	int ret;
 
 	dprintk("%s() frequency=%d\n", __func__, c->frequency);
-	dprintk("%s() bandwidth=%d\n", __func__, c->bandwidth);
+	dprintk("%s() bandwidth=%d\n", __func__, c->bandwidth_hz);
 
 	if (fe->ops.i2c_gate_ctrl)
 		fe->ops.i2c_gate_ctrl(fe, 1);
 
-	priv->bandwidth = c->bandwidth;
+	priv->bandwidth = c->bandwidth_hz;
 	ret = max2163_set_bandwidth(priv, priv->bandwidth);
 
 	priv->frequency = c->frequency;
