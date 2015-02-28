@@ -88,8 +88,8 @@ static int max2165_read_reg(struct max2165_priv *priv, u8 reg, u8 *p_data)
 	return 0;
 }
 
-static int max2165_mask_write_reg(struct max2165_priv *priv, u8 reg,
-	u8 mask, u8 data)
+static int max2165_mask_write_reg(struct max2165_priv *priv,
+                                  u8 reg, u8 mask, u8 data)
 {
 	int ret;
 	u8 v;

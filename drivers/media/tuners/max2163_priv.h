@@ -37,6 +37,7 @@
 #define BANDWIDTH_26MHZ           (1 << 0)
 #define BANDWIDTH_17MHZ           (2 << 0)
 #define BANDWIDTH_13MHZ           (3 << 0)
+#define IF_FILTER_REG_BANDWDITH_MASK 0x03
 #define BIAS_CURRENT_00           (0 << 2)
 #define BIAS_CURRENT_01           (1 << 2)
 #define BIAS_CURRENT_10           (2 << 2)

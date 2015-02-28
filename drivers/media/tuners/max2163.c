@@ -108,7 +108,35 @@ static int max2163_mask_write_reg(struct max2163_priv *priv, u8 reg,
 	return ret;
 }
 
-static int max2163_set_rf(struct max2163_priv *priv, u32 freq)
+static int max2163_set_bandwidth(struct max2163_priv *priv, u32 bw)
+{
+	u8 val;
+
+	switch(bw){
+        case 43000000:
+            val = BANDWIDTH_43MHZ;
+            break;
+        case 26000000:
+            val = BANDWIDTH_26MHZ;
+            break;
+        case 17000000:
+            val = BANDWIDTH_17MHZ;
+            break;
+        case 13000000:
+            val = BANDWIDTH_13MHZ;
+            break;
+        default:
+            dprintk("%s() bw=%d is unsupported. Using default 13MHz bandwidth configuration.\n", __func__, bw);
+            val = BANDWIDTH_13MHZ;
+    }
+
+    max2163_mask_write_reg(priv, IF_FILTER_REG,
+                                 IF_FILTER_REG_BANDWDITH_MASK, val);
+
+	return 0;
+}
+
+static int max2163_set_frequency(struct max2163_priv *priv, u32 freq)
 {
     int freq_range;
     int integer_divider;
@@ -160,12 +188,16 @@ static int max2163_set_params(struct dvb_frontend *fe)
 	int ret;
 
 	dprintk("%s() frequency=%d\n", __func__, c->frequency);
+	dprintk("%s() bandwidth=%d\n", __func__, c->bandwidth);
 
 	if (fe->ops.i2c_gate_ctrl)
 		fe->ops.i2c_gate_ctrl(fe, 1);
 
+	priv->bandwidth = c->bandwidth;
+	ret = max2163_set_bandwidth(priv, priv->bandwidth);
+
 	priv->frequency = c->frequency;
-	ret = max2163_set_rf(priv, priv->frequency);
+	ret = max2163_set_frequency(priv, priv->frequency);
 	mdelay(50); /* really needed ? */
 	if (fe->ops.i2c_gate_ctrl)
 		fe->ops.i2c_gate_ctrl(fe, 0);
@@ -181,6 +213,14 @@ static int max2163_get_frequency(struct dvb_frontend *fe, u32 *freq)
 	struct max2163_priv *priv = fe->tuner_priv;
 	dprintk("%s()\n", __func__);
 	*freq = priv->frequency;
+	return 0;
+}
+
+static int max2163_get_bandwidth(struct dvb_frontend *fe, u32 *bw)
+{
+	struct max2163_priv *priv = fe->tuner_priv;
+	dprintk("%s()\n", __func__);
+	*bw = priv->bandwidth;
 	return 0;
 }
 
@@ -289,21 +329,22 @@ static int max2163_release(struct dvb_frontend *fe)
 }
 
 static const struct dvb_tuner_ops max2163_tuner_ops = {
-	.info = {
-		.name           = "Maxim MAX2163",
-		.frequency_min  = 470000000,
-		.frequency_max  = 806000000,
-		.frequency_step =     50000,
-	},
+    .info = {
+        .name           = "Maxim MAX2163",
+        .frequency_min  = 470000000,
+        .frequency_max  = 806000000,
+        .frequency_step =     50000,
+    },
 
-	.release	   = max2163_release,
-	.init		   = max2163_init,
-	.sleep		   = max2163_sleep,
+    .release	   = max2163_release,
+    .init		   = max2163_init,
+    .sleep		   = max2163_sleep,
 
-	.set_params	   = max2163_set_params,
-	.set_analog_params = NULL,
-	.get_frequency	   = max2163_get_frequency,
-	.get_status	   = max2163_get_status
+    .set_params	   = max2163_set_params,
+    .set_analog_params = NULL,
+    .get_frequency = max2163_get_frequency,
+    .get_bandwidth = max2163_get_bandwidth,
+    .get_status    = max2163_get_status
 };
 
 struct dvb_frontend *max2163_attach(struct dvb_frontend *fe,
