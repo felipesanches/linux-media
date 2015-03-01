@@ -70,6 +70,7 @@
 #define USB_VID_EVOLUTEPC			0x1e59
 #define USB_VID_AZUREWAVE			0x13d3
 #define USB_VID_TECHNISAT			0x14f7
+#define USB_VID_ZINWELL             0x5a57
 
 /* Product IDs */
 #define USB_PID_ADSTECH_USB2_COLD			0xa333
@@ -385,4 +386,5 @@
 #define USB_PID_PCTV_2002E                              0x025c
 #define USB_PID_PCTV_2002E_SE                           0x025d
 #define USB_PID_SVEON_STV27                             0xd3af
+#define USB_PID_ZINWELL                             0x4210
 #endif
